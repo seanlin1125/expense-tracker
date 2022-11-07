@@ -44,8 +44,8 @@ router.post('/register', (req, res) => {
           errors,
           name,
           email,
-          password: 
-          confirmPassword
+          password:
+            confirmPassword
         })
       }
       return User.create({
@@ -62,11 +62,11 @@ router.post('/register', (req, res) => {
 })
 
 router.get('/logout', (req, res, next) => {
-  req.logout(() => {
-    return next()
+  req.logout((err) => {
+    if (err) return next(err)
+    req.flash('success_msg', `You've been successfully logged out!`)
+    res.redirect('/users/login')
   })
-  req.flash('success_msg', `You've been successfully logged out!`)
-  res.redirect('/users/login')
 })
 
 module.exports = router
