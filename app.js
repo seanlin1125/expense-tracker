@@ -24,7 +24,7 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
 }))
-
+app.use(flash())
 usePassport(app)
 
 app.use((req,res,next) => {
