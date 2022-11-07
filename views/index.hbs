@@ -1,1 +1,12 @@
 <h1>私房錢index畫面</h1>
+<div class="container">
+  <div class="row mt-5">
+    {{#each records}}
+    <div class="col-md-6 m-auto d-flex">
+      <h1>{{this.name}}/{{this.date}}/{{this.category}}/{{this.amount}}</h1>
+      <a href="/records/{{this._id}}/edit" class="edit-btn btn btn-outline-info">修改</a>
+      <a href="/records/{{this._id}}/delete" class="edit-btn btn btn-outline-danger">刪除</a>
+    </div>
+    {{/each}}
+  </div>
+</div>
