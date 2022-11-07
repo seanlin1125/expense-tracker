@@ -3,6 +3,10 @@ const router = express.Router()
 const User = require('../../models/user')
 const passport = require('passport')
 
+const bcrypt = require('bcryptjs')
+
+const saltRounds = 10;
+
 router.get('/login', (req, res) => {
   res.render('login')
 })
@@ -40,11 +44,15 @@ router.post('/register', (req, res) => {
           errors,
           name,
           email,
-          password,
+          password: 
           confirmPassword
         })
       }
-      return User.create(req.body)
+      return User.create({
+        name,
+        email,
+        password: bcrypt.hashSync(password, saltRounds)
+      })
         .then(() => {
           res.redirect('/users/login')
         })
