@@ -16,17 +16,28 @@ router.get('/register', (req, res) => {
 })
 router.post('/register', (req, res) => {
   const { name, email, password, confirmPassword } = req.body
+  const errors = []
   if (!name || !email || !password || !confirmPassword) {
-    console.log('All fields are required!');
+    errors.push({ message: 'All fields are required!' })
   }
   if (password !== confirmPassword) {
-    console.log('Passwords do not match');
+    errors.push({ message: 'Passwords do not match' })
+  }
+  if (errors.length) {
+    return res.render('register', {
+      errors,
+      name,
+      email,
+      password,
+      confirmPassword
+    })
   }
   User.findOne({ email })
     .then((user) => {
       if (user) {
-        console.log('User already exists!');
+        errors.push({ message: 'User already exists!' })
         return res.render('register', {
+          errors,
           name,
           email,
           password,
@@ -46,6 +57,7 @@ router.get('/logout', (req, res, next) => {
   req.logout(() => {
     return next()
   })
+  req.flash('success_msg', `You've been successfully logged out!`)
   res.redirect('/users/login')
 })
 
