@@ -1,14 +1,20 @@
 <h1>私房錢index畫面</h1>
+
 <div class="container">
-  <div class="row mt-5">
+  <ul class="list-group">
     {{#each records}}
-    <div class="col-md-6 m-auto d-flex">
-      <h3>{{this.name}}/{{this.date}}/{{this.category}}/{{this.amount}}</h3>
-      <a href="/records/{{this._id}}/edit" class="btn btn-outline-info">修改</a>
-      <form action="/records/{{this._id}}?_method=DELETE" method="POST">
-        <button type="submit" class="btn btn-outline-danger">刪除</button>
-      </form>
-    </div>
+    <li class="list-group-item">
+      <div class="row mt-5">
+        <div class="col-md-6 m-auto d-flex">
+          <h3>{{this.name}}/{{this.date}}/{{this.amount}}</h3>
+          <a href="/records/{{this._id}}/edit" class="btn btn-outline-info">修改</a>
+          <form action="/records/{{this._id}}?_method=DELETE" method="POST">
+            <button type="submit" class="btn btn-outline-danger">刪除</button>
+          </form>
+        </div>
+      </div>
+    </li>
     {{/each}}
-  </div>
+  </ul>
+  <a href="/records/new" class="btn btn-primary align-item-center">新增支出</a>
 </div>
