@@ -1,0 +1,62 @@
+[
+  {
+    "name": "升降桌",
+    "date": "2022-11-25",
+    "amount": "100",
+    "categoryId": "家居物業"
+  },
+  {
+    "name": "護眼螢幕",
+    "date": "2022-12-25",
+    "amount": "200",
+    "categoryId": "家居物業"
+  },
+  {
+    "name": "捷運",
+    "date": "2023-01-25",
+    "amount": "100",
+    "categoryId": "交通出行"
+  },
+  {
+    "name": "飛機",
+    "date": "2023-02-25",
+    "amount": "300",
+    "categoryId": "交通出行"
+  },
+  {
+    "name": "高空彈跳",
+    "date": "2023-03-25",
+    "amount": "100",
+    "categoryId": "休閒娛樂"
+  },
+  {
+    "name": "跳傘",
+    "date": "2023-04-25",
+    "amount": "400",
+    "categoryId": "休閒娛樂"
+  },
+  {
+    "name": "午餐",
+    "date": "2023-06-25",
+    "amount": "100",
+    "categoryId": "餐飲食品"
+  },
+  {
+    "name": "晚餐",
+    "date": "2023-07-25",
+    "amount": "500",
+    "categoryId": "餐飲食品"
+  },
+  {
+    "name": "慈善",
+    "date": "2023-08-25",
+    "amount": "600",
+    "categoryId": "其他"
+  },
+  {
+    "name": "十一奉獻",
+    "date": "2023-09-25",
+    "amount": "800",
+    "categoryId": "其他"
+  }
+]
