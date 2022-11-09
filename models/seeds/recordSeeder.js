@@ -4,22 +4,46 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
 const Record = require('../record')
+const Category = require('../../models/category')
 const User = require('../user')
 const db = require('../../config/mongoose')
-const SEED_USER = {
-  name: 'root',
-  email: 'root@example.com',
-  password: '12345678'
-}
+const SEED_USER = [
+  {
+    name: 'root',
+    email: 'root@example.com',
+    password: '12345678'
+  }
+]
 const records = require('./records.json')
 
 db.once('open', () => {
-  // return User.create({
-  //   name: SEED_USER.name,
-  //   email: SEED_USER.email,
-  //   password: bcrypt.hashSync(SEED_USER.password, saltRounds)
-  // })
-  // .then((user)=> {
-  //   const userId = user._id
-  // })
+  Category.find()
+    .lean()
+    .then((categories) => {
+      records.forEach((record) => {
+        record.categoryId = categories.find((category) => category.name === record.categoryId)._id
+      })
+    })
+    .then(() => {
+      Promise.all(SEED_USER.map((user) => {
+        const { name, email, password } = user
+        return User.create({
+          name,
+          email,
+          password: bcrypt.hashSync(password, saltRounds)
+        })
+          .then((user) => {
+            records.forEach((record) => record.userId = user._id)
+            return Record.create(records)
+          })
+          .catch((err) => console.error(err))
+      })
+      )
+        .then(() => {
+          console.log('records seeds imported!')
+          process.exit()
+        })
+        .catch((err) => console.error(err))
+    })
+    .catch((err) => console.error(err))
 })
