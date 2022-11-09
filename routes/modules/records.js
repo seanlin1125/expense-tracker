@@ -12,11 +12,9 @@ router.get('/new', (req, res) => {
 // 新增項目
 router.post('/', (req, res) => {
   const selectedCategory = req.body.category
-  console.log(req.body);
   Category.findOne({ name: selectedCategory })
     .lean()
     .then((category) => {
-      console.log(category);
       const categoryId = category._id
       const userId = req.user._id
       req.body.userId = userId
@@ -38,11 +36,9 @@ router.get('/:id/edit', (req, res) => {
 // 修改項目
 router.put('/:id', (req, res) => {
   const selectedCategory = req.body.category
-  console.log(req.body);
   Category.findOne({ name: selectedCategory })
     .lean()
     .then((category) => {
-      console.log(category);
       const categoryId = category._id
       const userId = req.user._id
       req.body.userId = userId

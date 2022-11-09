@@ -23,7 +23,7 @@ router.get('/', (req, res) => {
           records.forEach((record) => {
             totalAmount += record.amount
           })
-          return res.render('index', { records, categoriesFilter, totalAmount })
+          return res.render('index', { records, categories: categoriesFilter, totalAmount })
         })
         .catch((err) => console.error(err))
     })

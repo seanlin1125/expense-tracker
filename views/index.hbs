@@ -4,7 +4,7 @@
   <form action="/" class="filtered-category">
     <select name="filteredCategoryId" id="filteredCategoryId" class="form-select" onchange="this.form.submit()">
       <option>類別</option>
-      {{#each categoriesFilter}}
+      {{#each categories}}
       <option value="{{this._id}}">{{this.name}}</option>
       {{/each}}
     </select>
@@ -13,6 +13,7 @@
 
 <h1>總金額：{{totalAmount}}</h1>
 
+{{!-- Records --}}
 <div class="container">
   <ul class="list-group">
     {{#each records}}
