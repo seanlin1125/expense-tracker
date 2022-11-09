@@ -5,17 +5,29 @@ const router = express.Router()
 
 router.get('/', (req, res) => {
   const userId = req.user._id
-  Record.find({ userId })
+  const categoriesFilter = []
+  const filteredCategoryId = req.query.filteredCategoryId
+  let totalAmount = 0
+  Category.find()
     .lean()
-    .then((records) => res.render('index', { records }))
-  // Record.find()
-  //   .lean()
-  //   .then((records) => {
-  //     res.render('index', { records })
-  //     return Category.find({ _id: records.categoryId })
-  //   })
-  //   .then((categories) => res.render('index', { categories }))
-  //   .catch((err) => console.error(err))
+    .sort({ _id: 'asc' })
+    .then((categories) => {
+      categoriesFilter.push(...categories)
+    })
+    .then(() => {
+      const categoryAlreadySelected = categoriesFilter.some((category) => { return category._id.toString() === filteredCategoryId })
+      return Record.find(categoryAlreadySelected ? { userId, categoryId: filteredCategoryId } : { userId })
+        .populate('categoryId')
+        .lean()
+        .then((records) => {
+          records.forEach((record) => {
+            totalAmount += record.amount
+          })
+          return res.render('index', { records, categoriesFilter, totalAmount })
+        })
+        .catch((err) => console.error(err))
+    })
+    .catch((err) => console.error(err))
 })
 
 module.exports = router

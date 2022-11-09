@@ -1,4 +1,17 @@
-<h1>私房錢index畫面</h1>
+{{!-- 篩選類別 --}}
+<div class="category-container container mt-5">
+  <a href="/records/new" class="btn btn-primary align-item-center">新增支出</a>
+  <form action="/" class="filtered-category">
+    <select name="filteredCategoryId" id="filteredCategoryId" class="form-select" onchange="this.form.submit()">
+      <option>類別</option>
+      {{#each categoriesFilter}}
+      <option value="{{this._id}}">{{this.name}}</option>
+      {{/each}}
+    </select>
+  </form>
+</div>
+
+<h1>總金額：{{totalAmount}}</h1>
 
 <div class="container">
   <ul class="list-group">
@@ -6,7 +19,7 @@
     <li class="list-group-item">
       <div class="row mt-5">
         <div class="col-md-6 m-auto d-flex">
-          <i class="fa-solid fa-house"></i>
+          <i class="{{this.categoryId.icon}}"></i>
           <h3>{{this.name}}/{{this.date}}/{{this.amount}}</h3>
           <a href="/records/{{this._id}}/edit" class="btn btn-outline-info">修改</a>
           <form action="/records/{{this._id}}?_method=DELETE" method="POST">
@@ -17,5 +30,4 @@
     </li>
     {{/each}}
   </ul>
-  <a href="/records/new" class="btn btn-primary align-item-center">新增支出</a>
 </div>

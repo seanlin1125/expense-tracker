@@ -4,6 +4,7 @@ const session = require('express-session')
 const usePassport = require('./config/passport')
 const flash = require('connect-flash')
 const methodOverride = require('method-override')
+const handlebarsHelper = require('./helpers/handlebars-helper')
 const routes = require('./routes')
 
 if (process.env.NODE_ENV !== 'production') {
@@ -15,7 +16,7 @@ require('./config/mongoose')
 const app = express()
 const PORT = 3000
 
-app.engine('.hbs', exphbs.engine({ extname: '.hbs' }));
+app.engine('.hbs', exphbs.engine({ extname: '.hbs', helpers: handlebarsHelper }));
 app.set('view engine', '.hbs');
 app.set('views', './views');
 

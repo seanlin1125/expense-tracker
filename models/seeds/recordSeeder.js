@@ -34,7 +34,7 @@ db.once('open', () => {
         })
           .then((user) => {
             records.forEach((record) => record.userId = user._id)
-            return Record.create(records)
+            return Record.create(records) //不確定為何這裡沒有return會失敗?
           })
           .catch((err) => console.error(err))
       })
