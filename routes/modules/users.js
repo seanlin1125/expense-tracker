@@ -44,8 +44,8 @@ router.post('/register', (req, res) => {
           errors,
           name,
           email,
-          password:
-            confirmPassword
+          password,
+          confirmPassword
         })
       }
       return User.create({
