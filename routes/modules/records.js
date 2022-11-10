@@ -11,14 +11,13 @@ router.get('/new', (req, res) => {
 })
 // 新增項目
 router.post('/', (req, res) => {
-  const selectedCategory = req.body.category
-  Category.findOne({ name: selectedCategory })
+  const selectedCategoryName = req.body.category
+  Category.findOne({ name: selectedCategoryName })
     .lean()
     .then((category) => {
-      const categoryId = category._id
       const userId = req.user._id
       req.body.userId = userId
-      req.body.categoryId = categoryId
+      req.body.categoryId = category._id
       return Record.create(req.body)
     })
     .then(() => res.redirect('/'))
@@ -28,21 +27,33 @@ router.post('/', (req, res) => {
 router.get('/:id/edit', (req, res) => {
   const userId = req.user._id
   _id = req.params.id
-  return Record.findOne({ _id, userId })
+  Category.find()
     .lean()
-    .then((record) => res.render('edit', { record, categories }))
+    .sort({ _id: 'asc' })
+    .then((categories) => {
+      Record.findOne({ _id, userId })
+        .lean()
+        .then((record) => {
+          categories.forEach((category) => {
+            if (category._id.toString() === record.categoryId.toString()) {
+              category.selected = true
+            }
+          })
+          res.render('edit', { record, categories })
+        })
+        .catch((err) => console.error(err))
+    })
     .catch((err) => console.error(err))
 })
 // 修改項目
 router.put('/:id', (req, res) => {
-  const selectedCategory = req.body.category
-  Category.findOne({ name: selectedCategory })
+  const selectedCategoryId = req.body.category
+  Category.findOne({ _id: selectedCategoryId })
     .lean()
     .then((category) => {
-      const categoryId = category._id
       const userId = req.user._id
       req.body.userId = userId
-      req.body.categoryId = categoryId
+      req.body.categoryId = category._id
       return Record.findOneAndUpdate({ _id, userId }, req.body)
     })
     .then(() => res.redirect('/'))

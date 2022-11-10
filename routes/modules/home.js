@@ -20,6 +20,12 @@ router.get('/', (req, res) => {
         .populate('categoryId')
         .lean()
         .then((records) => {
+          categoriesFilter.forEach((category) => {
+            if (category._id.toString() === filteredCategoryId) {
+              category.selected = true
+            }
+          })
+          //計算總金額
           records.forEach((record) => {
             totalAmount += record.amount
           })
