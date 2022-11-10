@@ -13,7 +13,7 @@ if (process.env.NODE_ENV !== 'production') {
 require('./config/mongoose')
 
 const app = express()
-const PORT = 3000
+const PORT = process.env.PORT
 
 app.engine('.hbs', exphbs.engine({ extname: '.hbs' }));
 app.set('view engine', '.hbs');
