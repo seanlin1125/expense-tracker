@@ -1,34 +1,50 @@
-{{!-- 篩選類別 --}}
-<div class="category-container container mt-5">
-  <a href="/records/new" class="btn btn-primary align-item-center">新增支出</a>
-  <form action="/" class="filtered-category">
-    <select name="filteredCategoryId" id="filteredCategoryId" class="form-select" onchange="this.form.submit()">
-      <option>類別</option>
-      {{#each categories}}
-      <option value="{{this._id}}" {{#if this.selected}}selected{{/if}}>{{this.name}}</option>
-      {{/each}}
-    </select>
-  </form>
-</div>
-
-<h1>總金額：{{totalAmount}}</h1>
-
-{{!-- Records --}}
 <div class="container">
+  {{!-- 篩選類別 --}}
+  <div class="category-container container mt-5">
+    <form action="/" class="filtered-category">
+      <select name="filteredCategoryId" id="filteredCategoryId" class="form-select" onchange="this.form.submit()">
+        <option>類別</option>
+        {{#each categories}}
+        <option value="{{this._id}}" {{#if this.selected}}selected{{/if}}>{{this.name}}</option>
+        {{/each}}
+      </select>
+    </form>
+  </div>
+  {{!-- 金額顯示 --}}
+  <div class="amount-area d-flex justify-content-around">
+    <h1>總金額：</h1>
+    <h1 class="total-amount">{{totalAmount}}</h1>
+  </div>
+  {{!-- Records --}}
+
   <ul class="list-group">
     {{#each records}}
     <li class="list-group-item">
       <div class="row mt-5">
         <div class="col-md-6 m-auto d-flex">
-          <i class="{{this.categoryId.icon}}"></i>
-          <h3>{{this.name}}/{{this.date}}/{{this.amount}}</h3>
-          <a href="/records/{{this._id}}/edit" class="btn btn-outline-info">修改</a>
-          <form action="/records/{{this._id}}?_method=DELETE" method="POST">
-            <button type="submit" class="btn btn-outline-danger">刪除</button>
-          </form>
+          <i class="fs-1 {{this.categoryId.icon}}"></i>
+          <div class="name-and-date-area col">
+            <h4>{{this.name}}</h4>
+            <p class="date">{{this.date}}</p>
+          </div>
+          <div class="record-amount-area">
+            <h4 class="single-record">{{this.amount}}</h4>
+          </div>
+          <div class="functional-btn d-flex">
+            <div class="edit-btn">
+              <a href="/records/{{this._id}}/edit" class="btn btn-outline-info">修改</a>
+            </div>
+            <form action="/records/{{this._id}}?_method=DELETE" method="POST">
+              <button type="submit" class="btn btn-outline-danger">刪除</button>
+            </form>
+          </div>
         </div>
       </div>
     </li>
     {{/each}}
+
   </ul>
+  <div class="d-grid gap-2 col-6 mx-auto mt-3">
+    <a href="/records/new" class="btn btn-primary">新增支出</a>
+  </div>
 </div>
