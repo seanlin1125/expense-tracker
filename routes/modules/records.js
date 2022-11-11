@@ -11,7 +11,20 @@ router.get('/new', (req, res) => {
 })
 // 新增項目
 router.post('/', (req, res) => {
-  const selectedCategoryName = req.body.category
+  const { name, date, selectedCategoryName, amount } = req.body
+  const errors = []
+  if (!name || !date || !selectedCategoryName || !amount) {
+    errors.push({ message: 'All fields are required!' })
+  }
+  if (errors.length) {
+    return res.render('new', {
+      errors,
+      name,
+      date,
+      selectedCategoryName,
+      amount
+    })
+  }
   Category.findOne({ name: selectedCategoryName })
     .lean()
     .then((category) => {
