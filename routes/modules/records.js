@@ -3,36 +3,44 @@ const router = express.Router()
 
 const Record = require('../../models/record')
 const Category = require('../../models/category')
-const categories = require('../../models/seeds/categories.json')
 
 // 渲染新增頁
 router.get('/new', (req, res) => {
-  res.render('new', { categories })
+  Category.find()
+    .lean()
+    .sort({ _id: 'asc' })
+    .then((categories) => {
+      res.render('new', { categories })
+    })
+    .catch((err) => console.error(err))
 })
 // 新增項目
 router.post('/', (req, res) => {
-  const { name, date, selectedCategoryName, amount } = req.body
+  const selectedCategoryId = req.body.category
+  const { name, date, amount } = req.body
   const errors = []
-  if (!name || !date || !selectedCategoryName || !amount) {
+  if (!name || !date || !selectedCategoryId || !amount) {
     errors.push({ message: 'All fields are required!' })
   }
   if (errors.length) {
-    return res.render('new', {
-      errors,
-      name,
-      date,
-      selectedCategoryName,
-      amount
-    })
+    return Category.find()
+      .lean()
+      .sort({ _id: 'asc' })
+      .then((categories) => {
+        return res.render('new', {
+          errors,
+          name,
+          date,
+          amount,
+          categories
+        })
+      })
+      .catch((err) => console.error(err))
   }
-  Category.findOne({ name: selectedCategoryName })
-    .lean()
-    .then((category) => {
-      const userId = req.user._id
-      req.body.userId = userId
-      req.body.categoryId = category._id
-      return Record.create(req.body)
-    })
+  const userId = req.user._id
+  req.body.userId = userId
+  req.body.categoryId = selectedCategoryId
+  Record.create(req.body)
     .then(() => res.redirect('/'))
     .catch((err) => console.error(err))
 })
