@@ -7,7 +7,6 @@ router.get('/', (req, res) => {
   const userId = req.user._id
   const categoriesFilter = []
   const filteredCategoryId = req.query.filteredCategoryId
-  let totalAmount = 0
   Category.find()
     .lean()
     .sort({ _id: 'asc' })
@@ -26,9 +25,10 @@ router.get('/', (req, res) => {
             }
           })
           //計算總金額
-          records.forEach((record) => {
-            totalAmount += record.amount
-          })
+          const initialValue = 0
+          const totalAmount = records.reduce((previousValue, record) => {
+            return previousValue += record.amount
+          }, initialValue)
           return res.render('index', { records, categories: categoriesFilter, totalAmount })
         })
         .catch((err) => console.error(err))
